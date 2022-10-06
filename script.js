@@ -1,16 +1,8 @@
 "use strict";
-//La variable "x" debe ser random
-//Debe tomar 5 números por cada vuelta del for i 
-//Por cada vuelta del for j, el rango de n debe aumentar de 10 en 10
-//De esta forma, "x" tomaría los siguientes valores:
-//j = 0; 0 <= x < 10.
-//j = 1; 10 <= x < 20, y así sucesivamente hasta j = 9. 
 
-/*Tomo un valor "x" para columna "j". En cada columna
-aumento rango de números de 10 en 10 usando "n".*/
-
+/*Creo la interfaz del cartón de bingo de manera dinámica*/
+/*Serían en total 27 casilleros*/
 const bingoCard = document.querySelector(".bingoCard");
-
 const createLockers = () => {
 	const list = [];
 	const fragment = document.createDocumentFragment();
@@ -30,13 +22,16 @@ const createLockers = () => {
 
 let matrix = [];
 const generateMatrix = () => {
-	let x = 0;
-	let n = 0;
+	let x = 0; //Variable donde almacenamos valores aleatorios enteros.
+	let n = 0; //Sirve para aumentar de 10 en 10 el rango de numeros que puede tomar "x" en cada columna "i", para una fila "j"
+	//Con este doble for o for anidado, formamos una matriz de 9x3
 	for (let i = 0; i < 9; i++) {
 		//For i es para las columnas
-		let col = [];
+		let col = []; //Creamos un array para cada columna
 		for (let j = 0; j < 3; j++) {
 			//For j es para las filas
+			/*Tomo un valor "x" para columna "i". En cada columna
+			aumento rango de números de 10 en 10 usando "n".*/
 			if (j === 0) {
 				x = Math.floor(Math.random()*10 + n);
 				col[j] = x;
@@ -45,24 +40,29 @@ const generateMatrix = () => {
 				do {
 					x = Math.floor(Math.random()*10 + n);
 					col[j] = x;
-				} while (searchRepeated(j, col));
+				} while (searchRepeated(j, col)); //Si hay valores repetidos, entonces volvemos a generar un n° aleatorio X
 			}
 
 			if (j === 2) {
-				col.sort();
-				matrix.push(col);
-				n += 10;
+				col.sort(); //Ordenamos los valores de cada columna de menor a mayor
+				matrix.push(col); //Añadimos una nueva columna a la matriz
+				n += 10; //Aumentamos en 10  el rango de números de la próxima columna.
 			}
 		}		
 	}
 	console.log("Matrix: ", matrix);
-	rotateMatrix("a");
+	/*Una vez completada la matriz, rotamos la misma "90 grados" y la almacenamos en rotMatrix*/
+	rotateMatrix("a"); 
+	/*De esta forma se podrá recorrer la matriz a lo largo de la misma, de izquierda a derecha y
+	determinar asi, de manera aleatoria, los 4 espacios vacíos que debe tener cada fila como condición*/
+
 }
 
 let rotMatrix = [[],[],[]];
 let bool = true;
 const rotateMatrix = (type) => {
-	if (type === "a") {
+	//En primer lugar, ingresamos a este if. Mas adelante necesitaremos volver a la matriz original (else)
+	if (type === "a") { 
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 9; j++) {
 				rotMatrix[i][j] = matrix[j][i];
@@ -70,7 +70,7 @@ const rotateMatrix = (type) => {
 		}	
 		console.log("rotMatrix: ", rotMatrix);
 		if (bool === true) {
-			deleteNumbersX();
+			deleteNumbersX(); //Una vez cambiado los ejes, procedemos a ejecutar esta función
 			bool = false;
 		}
 	}
@@ -80,22 +80,31 @@ const rotateMatrix = (type) => {
 				matrix[i][j] = rotMatrix[j][i];
 			}	
 		}	
-		console.log("Matrix: ", matrix);
-		//deleteNumbersY();		
+		console.log("Matrix: ", matrix);		
 	}
 }
 
+//Ahora es for i para las filas y for j para las columnas
 const deleteNumbersX = () => {
-	let rPos;
+	let rPos; //Posición aleatoria que usará para generar espacios vacíos en cada fila
 	for (let i = 0; i < 2; i++) {
-		let rRef = [];
+		//For i para las filas.
+		//Empezamos a trabajar primero con las filas 0 y 1.
+		let rRef = []; 
+		/*Creamos un array de referencia para guardar las posiciones anteriores y asi asegurarnos
+		de que no se repita ninguna posicion*/
 		for (let j = 0; j < 4; j++) {
+			//For j para las columnas.
+			/*Seleccionaremos solo 4 columnas, al azar, para cada fila, para cumplir asi con la
+			condición del ejercicio*/
 			if (j === 0) {
-				rPos = Math.floor(Math.random()*(rotMatrix[i].length));						
-				rotMatrix[i][rPos] = "";
-				rRef.push(rPos);
+				/*Elegimos de forma aleatoria la primera columna para generarle un espacio vacío*/
+				rPos = Math.floor(Math.random()*(rotMatrix[i].length));	//Columna aleatoria					
+				rotMatrix[i][rPos] = ""; //Para una fila i y para una posición j aleatoria, tenemos "".
+				rRef.push(rPos); //Almacenamos esta posición
 			}
 			if (j > 0) {
+				//Para el resto de columnas: 1, 2 y 3 
 				do {
 					rPos = Math.floor(Math.random()*(rotMatrix[i].length));					
 				} while (rRef.indexOf(rPos) !== -1);	
