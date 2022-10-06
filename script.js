@@ -65,7 +65,7 @@ const rotateMatrix = (type) => {
 	if (type === "a") { 
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 9; j++) {
-				rotMatrix[i][j] = matrix[j][i];
+				rotMatrix[i][j] = matrix[j][i]; //Rotación de 90° de la matriz
 			}	
 		}	
 		console.log("rotMatrix: ", rotMatrix);
@@ -77,7 +77,7 @@ const rotateMatrix = (type) => {
 	else {
 		for (let i = 0; i < 9; i++) {
 			for (let j = 0; j < 3; j++) {
-				matrix[i][j] = rotMatrix[j][i];
+				matrix[i][j] = rotMatrix[j][i]; //Rotación de -90° de la matriz.
 			}	
 		}	
 		console.log("Matrix: ", matrix);		
@@ -104,39 +104,60 @@ const deleteNumbersX = () => {
 				rRef.push(rPos); //Almacenamos esta posición
 			}
 			if (j > 0) {
-				//Para el resto de columnas: 1, 2 y 3 
+				/*Para el resto de columnas: 1, 2 y 3, 
+				buscamos en el array de posiciones para verificar
+				que la actual posición no sea repetida*/
 				do {
 					rPos = Math.floor(Math.random()*(rotMatrix[i].length));					
 				} while (rRef.indexOf(rPos) !== -1);	
 
+				//Una vez obtenia la posición, convertimos ese espacio en vacío.
+				//... y asi sucesivamente hasta alcanzar j = 3, es decir, 4 espacios vacíos.
 				rotMatrix[i][rPos] = "";
 				rRef.push(rPos);			
 			}
 			if (i === 1 && j === 3) {
+				/*En la ultima vuelta de este for anidado, rotamos nuevamente la matriz
+				pero esta vez en "-90°*, es decir, volvemos a la matriz original, para utilizarla
+				en el siguiente for.*/
 				rotateMatrix("b");
 				console.log("Matrix: ", matrix);
 			}
 		}
 	}
-	let list = [];
-	let cEmpty = [];
+
+	//En este for se trabajará con la tercera fila de la matriz.
+	let list = [];//Array de posiciones que faltan convertir en espacios vacíos
+	let cEmpty = []; //Array que será usado para almacenar todos los espacios vacíos asignados
 	for (let m = 0; m < 9; m++) {
+		//For m para las columnas
+		/*Si nos posicionamos en una columna m, fila 3 y cuando miramos los dos casilleros de arriba
+		vemos que estos NO estan vacíos, entonces por condición del ejercicio, este casillero debe contener
+		un espacio vacío*/
 		if (matrix[m][0] !== "" && matrix[m][1] !== "" && cEmpty.length < 4) {
-			matrix[m][2] = "";
-			cEmpty.push("");
+			matrix[m][2] = ""; //Asignamos espacio vacío
+			cEmpty.push(""); //Contamos los espacios vacíos
 		}
+		/*Si nos posicionamos en una columna m, fila 3 y cuando miramos los dos casilleros de arriba
+		vemos que estos SI estan vacíos, entonces por condición del ejercicio, este casillero debe contener
+		un espacio vacío*/
 		else if (matrix[m][0] === "" && matrix[m][1] === "") {
-			matrix[m][2] = rotMatrix[2][m];
+			matrix[m][2] = rotMatrix[2][m]; //Mantenemos el valor del casillero
 		}
+		/*Si nos posicionamos en una columna m, fila 3 y cuando miramos los dos casilleros de arriba
+		vemos que solo uno de ellos se encuentra vacío, entonces por condición del ejercicio, este casillero puede
+		contener o un espacio vacío o un valor*/
 		else {
+			/*Las posiciones que pertenecen a este caso, las guardamos en un array "list"
+			para luego trabajar con estos casilleros en particular (en el siguiente for)*/
 			list.push(m);
 		}
 	}	
 	console.log(list);
 	console.log(cEmpty);
 
-	let mPos;
-	let mRef = [];
+	let mPos; //Sirve para elegir las posiciones del array "list". Estas serán elegidas de forma aleatoria
+	let mRef = []; //Array donde almacenaremos
 	for (let n = 0; n < list.length; n++) {
 		if (n === 0 && cEmpty.length < 4) {
 			mPos = Math.floor(Math.random()*(list.length));	
