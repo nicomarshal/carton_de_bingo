@@ -1,4 +1,13 @@
 "use strict";
+//La variable "x" debe ser random
+//Debe tomar 5 números por cada vuelta del for i 
+//Por cada vuelta del for j, el rango de n debe aumentar de 10 en 10
+//De esta forma, "x" tomaría los siguientes valores:
+//j = 0; 0 <= x < 10.
+//j = 1; 10 <= x < 20, y así sucesivamente hasta j = 9. 
+
+/*Tomo un valor "x" para columna "j". En cada columna
+aumento rango de números de 10 en 10 usando "n".*/
 
 const bingoCard = document.querySelector(".bingoCard");
 
@@ -23,26 +32,24 @@ let matrix = [];
 const generateMatrix = () => {
 	let x = 0;
 	let n = 0;
-	let rPos;
 	for (let i = 0; i < 9; i++) {
 		//For i es para las columnas
 		let col = [];
 		for (let j = 0; j < 3; j++) {
 			//For j es para las filas
 			if (j === 0) {
-				rPos = Math.floor(Math.random()*col.length);
 				x = Math.floor(Math.random()*10 + n);
 				col[j] = x;
 			}
 			if (j > 0) {
 				do {
-					rPos = Math.floor(Math.random()*col.length);
 					x = Math.floor(Math.random()*10 + n);
 					col[j] = x;
-				} while (searchRepeated(j, col))
+				} while (searchRepeated(j, col));
 			}
 
-			if (j === 2) {		
+			if (j === 2) {
+				col.sort();
 				matrix.push(col);
 				n += 10;
 			}
@@ -164,15 +171,5 @@ const searchRepeated = (j, col) => {
 	return (col.lastIndexOf(col[j], col.length-2) !== -1)
 }
 
-
 createLockers();
 
-			//La variable "x" debe ser random
-			//Debe tomar 5 números por cada vuelta del for i 
-			//Por cada vuelta del for j, el rango de n debe aumentar de 10 en 10
-			//De esta forma, "x" tomaría los siguientes valores:
-			//j = 0; 0 <= x < 10.
-			//j = 1; 10 <= x < 20, y así sucesivamente hasta j = 9. 
-
-			/*Tomo un valor "x" para columna "j". En cada columna
-			aumento rango de números de 10 en 10 usando "n".*/
