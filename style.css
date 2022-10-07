@@ -35,8 +35,8 @@ body {
 }
 
 .bingoCard {
-	height: 300px;
-	width: 900px;
+	height: 30vh;
+	width: 80vw;
 	background-color: var(--second-color);
 	padding: 5px;
 	border: 5px solid white;

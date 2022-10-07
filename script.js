@@ -40,13 +40,18 @@ const generateMatrix = () => {
 				do {
 					x = Math.floor(Math.random()*10 + n);
 					col[j] = x;
-				} while (searchRepeated(j, col)); //Si hay valores repetidos, entonces volvemos a generar un n° aleatorio X
+				} while (searchRepeated(j, col)); 
+				/*Si hay valores repetidos, entonces volvemos a generar un n° aleatorio X.
+				De esta forma nos aseguramos que en cada columna no se repitan los valores.*/
 			}
 
 			if (j === 2) {
 				col.sort(); //Ordenamos los valores de cada columna de menor a mayor
 				matrix.push(col); //Añadimos una nueva columna a la matriz
 				n += 10; //Aumentamos en 10  el rango de números de la próxima columna.
+				/*Como ya nos aseguramos que los valores de cada columna son distintos entre sí
+				y que los valores de fila también, entonces cumplimos la condición de que ningún
+				número puede repetirse*/
 			}
 		}		
 	}
@@ -156,27 +161,37 @@ const deleteNumbersX = () => {
 	console.log(list);
 	console.log(cEmpty);
 
+	/*Vamos a recorrer el array "list" para trabajar con las posiciones que nos faltan determinar*/
 	let mPos; //Sirve para elegir las posiciones del array "list". Estas serán elegidas de forma aleatoria
-	let mRef = []; //Array donde almacenaremos
+	let mRef = []; //Array donde almacenaremos las posiciones que ya fueron modificadas.
 	for (let n = 0; n < list.length; n++) {
+		/*En n igual a cero nos aseguramos que la cantidad
+		de espacios vacíos de la fila 3 no pase de 4*/
 		if (n === 0 && cEmpty.length < 4) {
+			//Elegimos una pos aleatoria del "list".
+			//Este list nos devolvera la posición en la matriz (o la columna que debemos modificar todavia en la fila 3)
 			mPos = Math.floor(Math.random()*(list.length));	
-			matrix[list[mPos]][2] = "";
-			mRef.push(mPos);
-			cEmpty.push("");
+			matrix[list[mPos]][2] = ""; //Asignamos un espacio vacío en esa posición
+			mRef.push(mPos);//Guardamos la posición como referencia.
+			cEmpty.push(""); 
+			//Luego agregamos "" a este array de espacios vacíos, para asi mantener un conteo y no pasarnos de 4
 		}
+		//Las condiciones son iguales que para el primer "n", a diferencia q acá avanzamos con el resto de las filas.
 		if (n > 0 && cEmpty.length < 4) {
 			do {
 				mPos = Math.floor(Math.random()*(list.length));					
-			} while (mRef.indexOf(mPos) !== -1);	
+			} while (mRef.indexOf(mPos) !== -1); //Nos aseguramos de elegir una posición igual a las anteriores	
 			matrix[list[mPos]][2] = "";
 			mRef.push(mPos);
 			cEmpty.push("");		
 		}
+		/*Repetimos el proceso hasta recorrer toda la lista de posiciones que faltaban modificar o
+		hasta que la cantidad de espacios vacíos sean 4 en total.*/
 	}
 
 	console.log("rotMatrix: ", rotMatrix);
 
+	//Ejecutamos la siguiente función para cargar los datos de la matriz en la interfaz que diseñamos inicialmente
 	playBingo();
 }
 
