@@ -30,13 +30,17 @@ body {
 	widows: 100vw;
 	background-color: var(--second-color);
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	row-gap: 30px;
 }
 
 .bingoCard {
 	height: 45vh;
 	width: 70vw;
+	min-width: 315px;
+	max-height: 180px;
 	background-color: var(--second-color);
 	padding: 5px;
 	border: 5px solid white;
@@ -53,8 +57,32 @@ body {
 	height: 100%;
 	background-color: var(--first-color);
 	color: white;
-	font-size: 2.5rem;
+	font-size: 1rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.button	{
+	background-color: var(--first-color);
+	border-radius: 50%;
+	border: 2px solid white;
+	padding: 10px;
+	opacity: 0.80;
+	transition: opacity .3s ease;
+}
+
+.button:hover {
+	opacity: 1;
+}
+
+.button a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.button svg {
+	width: 40px;
+	height: 40px;
 }
