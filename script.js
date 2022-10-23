@@ -33,12 +33,12 @@ const generateMatrix = () => {
 			/*Tomo un valor "x" para columna "i". En cada columna
 			aumento rango de números de 10 en 10 usando "n".*/
 			if (j === 0) {
-				x = Math.floor(Math.random()*10 + n);
+				x = Math.floor(Math.random()*10 + (n + 1));
 				col[j] = x;
 			}
 			if (j > 0) {
 				do {
-					x = Math.floor(Math.random()*10 + n);
+					x = Math.floor(Math.random()*10 + (n + 1));
 					col[j] = x;
 				} while (searchRepeated(j, col)); 
 				/*Si hay valores repetidos, entonces volvemos a generar un n° aleatorio X.
